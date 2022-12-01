@@ -26,55 +26,32 @@ fn run_2(contents: String) -> u32 {
         .map(|s| s.split("\n").map(|t| t.parse::<u32>().unwrap()).sum())
         .collect();
     scores.sort();
-    scores[scores.len() - 3..scores.len() - 1].iter().sum()
+    scores[scores.len() - 3..scores.len()].iter().sum()
 }
 #[cfg(test)]
 mod tests {
+    const TEST_INPUT: &str = "1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000";
+
     use super::*;
     #[test]
     fn test_day1_1() {
-        assert_eq!(
-            run_1(
-                "1000
-2000
-3000
-
-4000
-
-5000
-6000
-
-7000
-8000
-9000
-
-10000"
-                    .to_string(),
-            ),
-            24000
-        )
+        assert_eq!(run_1(TEST_INPUT.to_string()), 24000)
     }
     #[test]
     fn test_day1_2() {
-        assert_eq!(
-            run_2(
-                "1000
-2000
-3000
-
-4000
-
-5000
-6000
-
-7000
-8000
-9000
-
-10000"
-                    .to_string(),
-            ),
-            45000
-        )
+        assert_eq!(run_2(TEST_INPUT.to_string()), 45000)
     }
 }
