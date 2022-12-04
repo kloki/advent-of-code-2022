@@ -59,11 +59,11 @@ CrZsJsPPZsGzwwsLwLmpwMDw";
 
     use super::*;
     #[test]
-    fn test_day1_1() {
+    fn test_day3_1() {
         assert_eq!(run_1(TEST_INPUT.to_string()), 157)
     }
     #[test]
-    fn test_day1_2() {
+    fn test_day3_2() {
         assert_eq!(run_2(TEST_INPUT.to_string()), 70)
     }
 }
