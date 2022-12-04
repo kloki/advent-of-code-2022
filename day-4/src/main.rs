@@ -17,7 +17,7 @@ fn run_1(contents: String) -> usize {
     contents
         .trim()
         .split("\n")
-        .map(|l| Pair::new(l))
+        .map(|l| l.parse::<Pair>().unwrap())
         .map(|p| p.contained())
         .sum()
 }
@@ -26,7 +26,7 @@ fn run_2(contents: String) -> usize {
     contents
         .trim()
         .split("\n")
-        .map(|l| Pair::new(l))
+        .map(|l| l.parse::<Pair>().unwrap())
         .map(|p| p.overlapped())
         .sum()
 }

@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 #[derive(Debug)]
 pub struct Pair {
     ls: usize,
@@ -6,18 +8,6 @@ pub struct Pair {
     re: usize,
 }
 impl Pair {
-    pub fn new(input: &str) -> Self {
-        let parsed: Vec<Vec<usize>> = input
-            .split(",")
-            .map(|p| p.split("-").map(|c| c.parse::<usize>().unwrap()).collect())
-            .collect();
-        Pair {
-            ls: parsed[0][0],
-            le: parsed[0][1],
-            rs: parsed[1][0],
-            re: parsed[1][1],
-        }
-    }
     pub fn contained(&self) -> usize {
         if ((self.ls <= self.rs) && (self.re <= self.le))
             || ((self.rs <= self.ls) && (self.le <= self.re))
@@ -35,5 +25,24 @@ impl Pair {
             return 1;
         }
         0
+    }
+}
+
+#[derive(Debug)]
+pub struct PairParseError;
+impl FromStr for Pair {
+    type Err = PairParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let parsed: Vec<Vec<usize>> = s
+            .split(",")
+            .map(|p| p.split("-").map(|c| c.parse::<usize>().unwrap()).collect())
+            .collect();
+        Ok(Pair {
+            ls: parsed[0][0],
+            le: parsed[0][1],
+            rs: parsed[1][0],
+            re: parsed[1][1],
+        })
     }
 }
