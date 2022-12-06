@@ -14,11 +14,9 @@ fn main() {
 
 fn run(contents: String, size: usize) -> usize {
     let letters: Vec<char> = contents.trim().chars().collect();
-    let mut tmp = vec!['a'; size];
-    for i in size..letters.len() {
-        tmp.copy_from_slice(&letters[i - size..i]);
-        if tmp.iter().unique().collect::<Vec<&char>>().len() == size {
-            return i;
+    for (i, window) in letters.windows(size).enumerate() {
+        if window.iter().unique().collect::<Vec<&char>>().len() == size {
+            return i + size;
         }
     }
     0
