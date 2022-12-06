@@ -6,17 +6,17 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
-    let contents = fs::read_to_string(&path).expect("Can't read file");
+    let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run_1(contents.clone());
     println!("{}", answer);
-    let answer = run_2(contents.clone());
+    let answer = run_2(contents);
     println!("{}", answer);
 }
 
 fn run_1(contents: String) -> usize {
     contents
         .trim()
-        .split("\n")
+        .split('\n')
         .map(|l| l.parse::<Pair>().unwrap())
         .map(|p| p.contained())
         .sum()
@@ -25,7 +25,7 @@ fn run_1(contents: String) -> usize {
 fn run_2(contents: String) -> usize {
     contents
         .trim()
-        .split("\n")
+        .split('\n')
         .map(|l| l.parse::<Pair>().unwrap())
         .map(|p| p.overlapped())
         .sum()

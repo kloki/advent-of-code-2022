@@ -35,9 +35,9 @@ impl FromStr for Pair {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let parsed: Vec<Vec<usize>> = s
-            .split(",")
+            .split(',')
             .map(|p| {
-                p.split("-")
+                p.split('-')
                     .filter_map(|c| c.parse::<usize>().ok())
                     .collect()
             })

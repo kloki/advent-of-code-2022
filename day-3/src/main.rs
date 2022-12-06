@@ -4,10 +4,10 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
-    let contents = fs::read_to_string(&path).expect("Can't read file");
+    let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run_1(contents.clone());
     println!("{}", answer);
-    let answer = run_2(contents.clone());
+    let answer = run_2(contents);
     println!("{}", answer);
 }
 
@@ -29,10 +29,10 @@ fn priority_bag(input: &str) -> usize {
 }
 
 fn run_1(contents: String) -> usize {
-    contents.trim().split("\n").map(|s| priority_bag(s)).sum()
+    contents.trim().split('\n').map(priority_bag).sum()
 }
 fn run_2(contents: String) -> usize {
-    let mut bags = contents.trim().split("\n").peekable();
+    let mut bags = contents.trim().split('\n').peekable();
     let mut sum = 0;
     while bags.peek().is_some() {
         let bag1 = bags.next().unwrap();

@@ -5,17 +5,17 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
-    let contents = fs::read_to_string(&path).expect("Can't read file");
+    let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run(contents.clone(), 4);
     println!("{}", answer);
-    let answer = run(contents.clone(), 14);
+    let answer = run(contents, 14);
     println!("{}", answer);
 }
 
 fn run(contents: String, size: usize) -> usize {
     let letters: Vec<char> = contents.trim().chars().collect();
     for (i, window) in letters.windows(size).enumerate() {
-        if window.iter().unique().collect::<Vec<&char>>().len() == size {
+        if window.iter().unique().count() == size {
             return i + size;
         }
     }
@@ -28,7 +28,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_day6_1_1() {
-        assert_eq!(run("bvwbjplbgvbhsrlpgdmjqwftvncz".to_string(), 4), 5)
+        assert_eq!(run("bvwbjplbgvbhsrlpgdmjqwftvncz".to_string(), 4), 8)
     }
     #[test]
     fn test_day6_1_2() {

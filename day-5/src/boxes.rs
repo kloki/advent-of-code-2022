@@ -4,7 +4,7 @@ pub struct BoxStack {
 }
 impl BoxStack {
     pub fn new(input: &str) -> Self {
-        let mut lines: Vec<&str> = input.split("\n").collect();
+        let mut lines: Vec<&str> = input.split('\n').collect();
         let length = lines
             .pop()
             .unwrap()
@@ -59,7 +59,7 @@ pub struct Operation {
 }
 impl Operation {
     pub fn new(input: &str) -> Self {
-        let parts: Vec<&str> = input.split(" ").collect();
+        let parts: Vec<&str> = input.split(' ').collect();
         Operation {
             source: parts[3].parse().unwrap(),
             target: parts[5].parse().unwrap(),

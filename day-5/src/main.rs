@@ -6,21 +6,17 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
-    let contents = fs::read_to_string(&path).expect("Can't read file");
+    let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run_1(contents.clone());
     println!("{}", answer);
-    let answer = run_2(contents.clone());
+    let answer = run_2(contents);
     println!("{}", answer);
 }
 
 fn run_1(contents: String) -> String {
     let parts: Vec<&str> = contents.split("\n\n").collect();
     let mut stacks = BoxStack::new(parts[0]);
-    let operations: Vec<Operation> = parts[1]
-        .trim()
-        .split("\n")
-        .map(|l| Operation::new(l))
-        .collect();
+    let operations: Vec<Operation> = parts[1].trim().split('\n').map(Operation::new).collect();
     for o in operations.into_iter() {
         stacks.process_9000(o)
     }
@@ -31,11 +27,7 @@ fn run_1(contents: String) -> String {
 fn run_2(contents: String) -> String {
     let parts: Vec<&str> = contents.split("\n\n").collect();
     let mut stacks = BoxStack::new(parts[0]);
-    let operations: Vec<Operation> = parts[1]
-        .trim()
-        .split("\n")
-        .map(|l| Operation::new(l))
-        .collect();
+    let operations: Vec<Operation> = parts[1].trim().split('\n').map(Operation::new).collect();
     for o in operations.into_iter() {
         stacks.process_9001(o)
     }
