@@ -5,7 +5,7 @@ pub enum CMD {
 }
 
 pub fn parse_command(input: &str) -> CMD {
-    if input.starts_with("ls") | input.starts_with("$ ls") {
+    if input.starts_with("ls") {
         CMD::Ls(input.split_once('\n').unwrap().1.to_string())
     } else if input == "cd .." {
         CMD::Back
