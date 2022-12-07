@@ -40,9 +40,8 @@ impl Folder {
         }
     }
     pub fn size(&self) -> u32 {
-        let mut size = self.files.iter().map(|f| f.size).sum::<u32>();
-        size += self.subs.iter().map(|s| s.size()).sum::<u32>();
-        size
+        self.files.iter().map(|f| f.size).sum::<u32>()
+            + self.subs.iter().map(|s| s.size()).sum::<u32>()
     }
     pub fn collect_sizes(&self) -> Vec<u32> {
         self.subs
