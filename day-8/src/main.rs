@@ -7,6 +7,8 @@ fn main() {
     let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run_1(contents.clone());
     println!("{}", answer);
+    let answer = run_2(contents);
+    println!("{}", answer);
 }
 
 #[derive(Debug)]
@@ -104,6 +106,67 @@ fn run_1(contents: String) -> usize {
     get_visible(forest)
 }
 
+fn get_score(forest: &Vec<Vec<Tree>>, x: usize, y: usize) -> usize {
+    let max_y = forest.len() - 1;
+    let max_x = forest[0].len() - 1;
+
+    if x == 0 || x == max_x || y == 0 || y == max_y {
+        return 0;
+    }
+
+    let current_height = forest[y][x].height;
+    let mut score = 1;
+
+    let mut step = 0;
+    loop {
+        step += 1;
+        if current_height <= forest[y][x + step].height || x + step == max_x {
+            score *= step;
+            break;
+        }
+    }
+
+    step = 0;
+    loop {
+        step += 1;
+        if current_height <= forest[y][x - step].height || x - step == 0 {
+            score *= step;
+            break;
+        }
+    }
+    step = 0;
+    loop {
+        step += 1;
+        if current_height <= forest[y + step][x].height || y + step == max_y {
+            score *= step;
+            break;
+        }
+    }
+
+    step = 0;
+    loop {
+        step += 1;
+        if current_height <= forest[y - step][x].height || y - step == 0 {
+            score *= step;
+            break;
+        }
+    }
+    score
+}
+fn run_2(contents: String) -> usize {
+    let forest = parse_forest(contents);
+    let mut scores: Vec<usize> = vec![];
+
+    let max_y = forest.len() - 1;
+    let max_x = forest[0].len() - 1;
+    for y in 0..max_y {
+        for x in 0..max_x {
+            scores.push(get_score(&forest, x, y))
+        }
+    }
+    *scores.iter().max().unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     const TEST_INPUT: &str = "30373
@@ -117,8 +180,8 @@ mod tests {
     fn test_day8_1() {
         assert_eq!(run_1(TEST_INPUT.to_string()), 21)
     }
-    // #[test]
-    // fn test_day8_2() {
-    //     assert_eq!(run_1(TEST_INPUT.to_string()), 8)
-    // }
+    #[test]
+    fn test_day8_2() {
+        assert_eq!(run_2(TEST_INPUT.to_string()), 8)
+    }
 }
