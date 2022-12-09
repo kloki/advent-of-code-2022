@@ -40,25 +40,24 @@ impl Rope {
     pub fn process(&mut self, motion: &Motion) {
         let mut delta_x = 0;
         let mut delta_y = 0;
-        let steps;
-        match motion {
+        let steps = match motion {
             Motion::L(s) => {
                 delta_x = -1;
-                steps = *s
+                *s
             }
             Motion::R(s) => {
                 delta_x = 1;
-                steps = *s
+                *s
             }
             Motion::U(s) => {
                 delta_y = 1;
-                steps = *s
+                *s
             }
             Motion::D(s) => {
                 delta_y = -1;
-                steps = *s
+                *s
             }
-        }
+        };
         for _ in 0..steps {
             self.knots[0].0 += delta_x;
             self.knots[0].1 += delta_y;
