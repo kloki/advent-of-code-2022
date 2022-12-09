@@ -65,19 +65,17 @@ impl Rope {
             for i in 1..self.size {
                 let diff_x = self.knots[i - 1].0 - self.knots[i].0;
                 let diff_y = self.knots[i - 1].1 - self.knots[i].1;
-                if diff_x.abs() == 0 && diff_y.abs() == 2 {
-                    self.knots[i].1 += diff_y / 2;
-                } else if diff_x.abs() == 2 && diff_y.abs() == 0 {
-                    self.knots[i].0 += diff_x / 2;
-                } else if diff_x.abs() == 1 && diff_y.abs() == 2 {
-                    self.knots[i].0 += diff_x;
-                    self.knots[i].1 += diff_y / 2;
-                } else if diff_x.abs() == 2 && diff_y.abs() == 1 {
-                    self.knots[i].0 += diff_x / 2;
-                    self.knots[i].1 += diff_y;
-                } else if diff_x.abs() == 2 && diff_y.abs() == 2 {
-                    self.knots[i].0 += diff_x / 2;
-                    self.knots[i].1 += diff_y / 2;
+                if !(diff_x.abs() < 2 && diff_y.abs() < 2) {
+                    if diff_x.is_negative() {
+                        self.knots[i].0 -= 1;
+                    } else if diff_x.is_positive() {
+                        self.knots[i].0 += 1;
+                    }
+                    if diff_y.is_negative() {
+                        self.knots[i].1 -= 1;
+                    } else if diff_y.is_positive() {
+                        self.knots[i].1 += 1;
+                    }
                 }
             }
 
