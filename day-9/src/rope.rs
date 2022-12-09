@@ -19,6 +19,7 @@ impl Motion {
     }
 }
 
+#[derive(Debug)]
 pub struct Rope {
     knots: Vec<(isize, isize)>,
     visited: HashSet<(isize, isize)>,
@@ -74,6 +75,9 @@ impl Rope {
                 } else if diff_x.abs() == 2 && diff_y.abs() == 1 {
                     self.knots[i].0 += diff_x / 2;
                     self.knots[i].1 += diff_y;
+                } else if diff_x.abs() == 2 && diff_y.abs() == 2 {
+                    self.knots[i].0 += diff_x / 2;
+                    self.knots[i].1 += diff_y / 2;
                 }
             }
 

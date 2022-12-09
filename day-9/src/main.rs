@@ -40,6 +40,7 @@ R 17
 D 10
 L 25
 U 20";
+
     use super::*;
     #[test]
     fn test_day9_1() {
