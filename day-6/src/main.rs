@@ -28,7 +28,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_day6_1_1() {
-        assert_eq!(run("bvwbjplbgvbhsrlpgdmjqwftvncz".to_string(), 4), 8)
+        assert_eq!(run("bvwbjplbgvbhsrlpgdmjqwftvncz".to_string(), 4), 5)
     }
     #[test]
     fn test_day6_1_2() {
