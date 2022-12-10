@@ -7,24 +7,42 @@ fn main() {
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
     let contents = fs::read_to_string(path).expect("Can't read file");
-    let answer = run(contents.clone());
-    let score = answer[18] * 20
-        + answer[58] * 60
-        + answer[98] * 100
-        + answer[138] * 140
-        + answer[178] * 180
-        + answer[218] * 220;
+    let answer = run(contents);
+    let score = answer[19] * 20
+        + answer[59] * 60
+        + answer[99] * 100
+        + answer[139] * 140
+        + answer[179] * 180
+        + answer[219] * 220;
     println!("{}", score);
+    print_screens(answer)
+}
+
+fn print_screens(outputs: Vec<isize>) {
+    for i in 0..6 {
+        let mut output = "".to_string();
+        for j in 0..40 {
+            if (outputs[i * 40 + j] - j as isize).abs() < 2 {
+                output.push('#')
+            } else {
+                output.push('.');
+            }
+        }
+
+        println!("{}", output);
+    }
 }
 
 fn run(contents: String) -> Vec<isize> {
     let signals: Vec<Signal> = contents.trim().split('\n').map(Signal::new).collect();
     let mut tube = Tube::new();
-    let mut answer: Vec<isize> = vec![];
-    for signal in signals {
-        answer.append(&mut tube.process(&signal));
-    }
-    answer
+    signals
+        .iter()
+        .map(|s| tube.process(s))
+        .fold(vec![1], |mut acc, mut x| {
+            acc.append(&mut x);
+            acc
+        })
 }
 
 #[cfg(test)]
@@ -184,17 +202,20 @@ noop";
     fn test_day9_0() {
         let answer = run(TEST_INPUT_SHORT.to_string());
         dbg!(&answer);
-        assert_eq!(answer[2], 4);
-        assert_eq!(answer[4], -1);
+        assert_eq!(answer[3], 4);
+        assert_eq!(answer[5], -1);
     }
     #[test]
     fn test_day9_1() {
         let answer = run(TEST_INPUT.to_string());
-        assert_eq!(answer[18], 21);
-        assert_eq!(answer[58], 19);
-        assert_eq!(answer[98], 18);
-        assert_eq!(answer[138], 21);
-        assert_eq!(answer[178], 16);
-        assert_eq!(answer[218], 18);
+        assert_eq!(answer[19], 21);
+        assert_eq!(answer[59], 19);
+        assert_eq!(answer[99], 18);
+        assert_eq!(answer[139], 21);
+        assert_eq!(answer[179], 16);
+        assert_eq!(answer[219], 18);
+        print_screens(answer);
+
+        // assert_eq!(2, 1);
     }
 }
