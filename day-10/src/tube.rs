@@ -16,30 +16,20 @@ impl Signal {
 
 pub struct Tube {
     output: isize,
-    size: usize,
-    tube: Vec<isize>,
 }
 
 impl Tube {
     pub fn new() -> Self {
-        Tube {
-            output: 1,
-            size: 2,
-            tube: vec![0; 2],
-        }
+        Tube { output: 1 }
     }
-    pub fn process(&mut self, signal: &Signal) -> isize {
-        dbg!(self.tube[0]);
-        self.output += self.tube[0];
-
-        dbg!(self.output);
-        for i in 1..self.size {
-            self.tube[i - 1] = self.tube[i];
-        }
+    pub fn process(&mut self, signal: &Signal) -> Vec<isize> {
         match signal {
-            Signal::Addx(s) => self.tube[1] = *s,
-            _ => self.tube[1] = 0,
+            Signal::Addx(s) => {
+                let old = self.output;
+                self.output += *s;
+                vec![old, self.output]
+            }
+            Signal::Noop => vec![self.output],
         }
-        self.output
     }
 }

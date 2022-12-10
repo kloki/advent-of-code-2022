@@ -8,24 +8,30 @@ fn main() {
     let path = &args.get(1).unwrap_or(&fallback);
     let contents = fs::read_to_string(path).expect("Can't read file");
     let answer = run(contents.clone());
-    // println!("{}", answer);
+    let score = answer[18] * 20
+        + answer[58] * 60
+        + answer[98] * 100
+        + answer[138] * 140
+        + answer[178] * 180
+        + answer[218] * 220;
+    println!("{}", score);
 }
 
 fn run(contents: String) -> Vec<isize> {
     let signals: Vec<Signal> = contents.trim().split('\n').map(Signal::new).collect();
     let mut tube = Tube::new();
-    signals.iter().map(|s| tube.process(s)).collect()
+    let mut answer: Vec<isize> = vec![];
+    for signal in signals {
+        answer.append(&mut tube.process(&signal));
+    }
+    answer
 }
 
 #[cfg(test)]
 mod tests {
     const TEST_INPUT_SHORT: &str = "noop
 addx 3
-addx -5
-noop
-noop
-noop";
-
+addx -5";
     const TEST_INPUT: &str = "addx 15
 addx -11
 addx 6
@@ -177,17 +183,18 @@ noop";
     #[test]
     fn test_day9_0() {
         let answer = run(TEST_INPUT_SHORT.to_string());
-        assert_eq!(answer[3], 4);
+        dbg!(&answer);
+        assert_eq!(answer[2], 4);
         assert_eq!(answer[4], -1);
     }
     #[test]
     fn test_day9_1() {
         let answer = run(TEST_INPUT.to_string());
-        assert_eq!(answer[19], 21);
-        assert_eq!(answer[59], 19);
-        assert_eq!(answer[99], 18);
-        assert_eq!(answer[139], 21);
-        assert_eq!(answer[179], 16);
-        assert_eq!(answer[219], 18);
+        assert_eq!(answer[18], 21);
+        assert_eq!(answer[58], 19);
+        assert_eq!(answer[98], 18);
+        assert_eq!(answer[138], 21);
+        assert_eq!(answer[178], 16);
+        assert_eq!(answer[218], 18);
     }
 }
