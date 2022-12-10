@@ -23,9 +23,9 @@ fn print_screens(outputs: Vec<isize>) {
         let mut output = "".to_string();
         for j in 0..40 {
             if (outputs[i * 40 + j] - j as isize).abs() < 2 {
-                output.push('#')
+                output.push('⬜');
             } else {
-                output.push('.');
+                output.push('⬛')
             }
         }
 
