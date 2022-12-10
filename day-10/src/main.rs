@@ -183,7 +183,11 @@ noop";
     #[test]
     fn test_day9_1() {
         let answer = run(TEST_INPUT.to_string());
-        dbg!(&answer);
-        assert_eq!(answer[18], 21);
+        assert_eq!(answer[19], 21);
+        assert_eq!(answer[59], 19);
+        assert_eq!(answer[99], 18);
+        assert_eq!(answer[139], 21);
+        assert_eq!(answer[179], 16);
+        assert_eq!(answer[219], 18);
     }
 }
