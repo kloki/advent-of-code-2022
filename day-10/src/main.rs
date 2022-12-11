@@ -199,14 +199,14 @@ noop";
 
     use super::*;
     #[test]
-    fn test_day9_0() {
+    fn test_day10_0() {
         let answer = run(TEST_INPUT_SHORT.to_string());
         dbg!(&answer);
         assert_eq!(answer[3], 4);
         assert_eq!(answer[5], -1);
     }
     #[test]
-    fn test_day9_1() {
+    fn test_day10() {
         let answer = run(TEST_INPUT.to_string());
         assert_eq!(answer[19], 21);
         assert_eq!(answer[59], 19);
