@@ -18,6 +18,7 @@ pub struct Monkey {
     test: isize,
     test_pass: usize,
     test_fail: usize,
+    pub inspections: usize,
 }
 
 impl Monkey {
@@ -64,6 +65,7 @@ impl Monkey {
             test,
             test_pass,
             test_fail,
+            inspections: 0,0,
         }
     }
 }

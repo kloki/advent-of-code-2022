@@ -13,7 +13,9 @@ fn main() {
 
 fn run(contents: String) -> usize {
     let monkeys: Vec<Monkey> = contents.trim().split("\n\n").map(Monkey::new).collect();
-    0
+    let mut inspections: Vec<usize> = monkeys.iter().map(|m| m.inspections).collect();
+    inspections.sort();
+    inspections[inspections.len()] * inspections[inspections.len() - 1]
 }
 
 #[cfg(test)]
