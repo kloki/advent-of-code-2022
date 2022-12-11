@@ -84,8 +84,8 @@ mod tests {
         let monkey = Monkey::new(TEST_INPUT);
         assert!(&monkey.items.contains(&79));
         assert!(&monkey.items.contains(&98));
-        assert_eq!(&monkey.operation, Operation::Multiply);
-        assert_eq!(&monkey.value, Value::Int(19));
+        assert!(matches!(&monkey.operation, Operation::Multiply));
+        assert!(matches!(&monkey.value, Value::Int(19)));
         assert_eq!(&monkey.test_pass, &2);
         assert_eq!(&monkey.test_fail, &3);
     }
