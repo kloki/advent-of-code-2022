@@ -65,8 +65,34 @@ impl Monkey {
             test,
             test_pass,
             test_fail,
-            inspections: 0,0,
+            inspections: 0,
         }
+    }
+
+    pub fn give(&mut self, item: isize) {
+        self.items.push(item)
+    }
+
+    pub fn worry(&mut self, division: isize) -> Vec<(usize, isize)> {
+        let mut items: Vec<(usize, isize)> = Vec::new();
+        for item in self.items.drain(..) {
+            self.inspections += 1;
+            let value = match self.value {
+                Value::Old => item,
+                Value::Int(s) => s,
+            };
+            let new_item = match self.operation {
+                Operation::Add => (item + value) / division,
+                Operation::Multiply => (item * value) / division,
+            };
+            if new_item % self.test == 0 {
+                items.push((self.test_pass, new_item))
+            } else {
+                items.push((self.test_fail, new_item))
+            }
+        }
+
+        items
     }
 }
 

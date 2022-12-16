@@ -7,15 +7,23 @@ fn main() {
     let fallback = "./input/input.txt".to_owned();
     let path = &args.get(1).unwrap_or(&fallback);
     let contents = fs::read_to_string(path).expect("Can't read file");
-    let answer = run(contents);
+    let answer = run(contents, 20, 3);
     println!("{}", answer);
 }
 
-fn run(contents: String) -> usize {
-    let monkeys: Vec<Monkey> = contents.trim().split("\n\n").map(Monkey::new).collect();
+fn run(contents: String, rounds: usize, division: isize) -> usize {
+    let mut monkeys: Vec<Monkey> = contents.trim().split("\n\n").map(Monkey::new).collect();
+    for _ in 0..rounds {
+        for i in 0..monkeys.len() {
+            let items = monkeys[i].worry(division);
+            for item in items {
+                monkeys[item.0].give(item.1);
+            }
+        }
+    }
     let mut inspections: Vec<usize> = monkeys.iter().map(|m| m.inspections).collect();
-    inspections.sort();
-    inspections[inspections.len()] * inspections[inspections.len() - 1]
+    inspections.sort_unstable();
+    inspections[inspections.len() - 1] * inspections[inspections.len() - 2]
 }
 
 #[cfg(test)]
@@ -37,7 +45,7 @@ Monkey 1:
 
 Monkey 2:
   Starting items: 79, 60, 97
-  Operation: new = old * old
+  Operation: new = old + old
   Test: divisible by 13
     If true: throw to monkey 1
     If false: throw to monkey 3
@@ -52,6 +60,10 @@ Monkey 3:
     use super::*;
     #[test]
     fn test_day11_1() {
-        assert_eq!(run(TEST_INPUT.to_string()), 10605);
+        assert_eq!(run(TEST_INPUT.to_string(), 20, 3), 10605);
+    }
+    #[test]
+    fn test_day11_2() {
+        assert_eq!(run(TEST_INPUT.to_string(), 100000, 1), 2713310158);
     }
 }
