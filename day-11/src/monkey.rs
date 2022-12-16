@@ -87,6 +87,7 @@ impl Monkey {
                 Operation::Add => (item + value),
                 Operation::Multiply => (item * value),
             };
+
             if self.modulo == 1 {
                 new_item /= 3;
             }
