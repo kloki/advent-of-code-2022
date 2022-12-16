@@ -15,7 +15,8 @@ pub struct Monkey {
     items: Vec<isize>,
     operation: Operation,
     value: Value,
-    test: isize,
+    pub test: isize,
+    pub modulo: isize,
     test_pass: usize,
     test_fail: usize,
     pub inspections: usize,
@@ -66,6 +67,7 @@ impl Monkey {
             test_pass,
             test_fail,
             inspections: 0,
+            modulo: 1,
         }
     }
 
@@ -73,7 +75,7 @@ impl Monkey {
         self.items.push(item)
     }
 
-    pub fn worry(&mut self, division: isize) -> Vec<(usize, isize)> {
+    pub fn worry(&mut self) -> Vec<(usize, isize)> {
         let mut items: Vec<(usize, isize)> = Vec::new();
         for item in self.items.drain(..) {
             self.inspections += 1;
@@ -81,15 +83,22 @@ impl Monkey {
                 Value::Old => item,
                 Value::Int(s) => s,
             };
-            let new_item = match self.operation {
-                Operation::Add => (item + value) / division,
-                Operation::Multiply => (item * value) / division,
+            let mut new_item = match self.operation {
+                Operation::Add => (item + value),
+                Operation::Multiply => (item * value),
             };
-            if new_item % self.test == 0 {
-                items.push((self.test_pass, new_item))
-            } else {
-                items.push((self.test_fail, new_item))
+            if self.modulo == 1 {
+                new_item /= 3;
             }
+            let mut next_monkey = self.test_fail;
+            if new_item % self.test == 0 {
+                next_monkey = self.test_pass;
+            }
+
+            if self.modulo != 1 {
+                new_item %= self.modulo;
+            }
+            items.push((next_monkey, new_item))
         }
 
         items
