@@ -1,4 +1,4 @@
-use node::{get_end_score, get_start, get_start_candidates, parse_map, Node};
+use node::{get_start, get_start_candidates, parse_map, Node};
 use std::env;
 use std::fs;
 mod node;
@@ -28,12 +28,13 @@ fn update_node(
     None
 }
 
-fn run_1(contents: String) -> usize {
-    let mut map = parse_map(contents);
-    let mut candidates = vec![get_start(&map)];
+fn find_route(mut map: Vec<Vec<Node>>, sp: (usize, usize)) -> usize {
+    let mut candidates = vec![sp];
     while !candidates.is_empty() {
         let (y, x) = candidates.remove(0);
-
+        if map[y][x].is_goal() {
+            return map[y][x].distance;
+        }
         let distance = &map[y][x].distance + 1;
         let height = &map[y][x].height + 2;
         if x != 0 {
@@ -57,38 +58,26 @@ fn run_1(contents: String) -> usize {
             }
         }
     }
-    get_end_score(&map)
+    0
+}
+
+fn run_1(contents: String) -> usize {
+    let map = parse_map(contents);
+    let start = get_start(&map);
+    find_route(map, start)
 }
 
 fn run_2(contents: String) -> usize {
-    let mut map = parse_map(contents);
-    let mut candidates = get_start_candidates(&map);
-    while !candidates.is_empty() {
-        let (y, x) = candidates.remove(0);
-        let distance = &map[y][x].distance + 1;
-        let height = &map[y][x].height + 2;
-        if x != 0 {
-            if let Some(c) = update_node(&mut map, y, x - 1, height, distance) {
-                candidates.push(c);
-            }
-        }
-        if y != 0 {
-            if let Some(c) = update_node(&mut map, y - 1, x, height, distance) {
-                candidates.push(c);
-            }
-        }
-        if x != (map[0].len() - 1) {
-            if let Some(c) = update_node(&mut map, y, x + 1, height, distance) {
-                candidates.push(c);
-            }
-        }
-        if y != (map.len() - 1) {
-            if let Some(c) = update_node(&mut map, y + 1, x, height, distance) {
-                candidates.push(c);
-            }
+    let map = parse_map(contents.clone());
+    let start_points = get_start_candidates(&map);
+    let mut score = 999999;
+    for st in start_points {
+        let new_score = find_route(parse_map(contents.clone()), st);
+        if new_score < score && new_score != 0 {
+            score = new_score
         }
     }
-    get_end_score(&map)
+    score
 }
 
 #[cfg(test)]

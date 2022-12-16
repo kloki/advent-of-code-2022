@@ -11,7 +11,7 @@ impl Node {
         if letter == 'S' {
             height = 1;
         } else if letter == 'E' {
-            height = 27;
+            height = 26;
         }
 
         Node {
@@ -56,14 +56,4 @@ pub fn get_start_candidates(map: &Vec<Vec<Node>>) -> Vec<(usize, usize)> {
         }
     }
     candidates
-}
-pub fn get_end_score(map: &Vec<Vec<Node>>) -> usize {
-    for line in map.iter() {
-        for node in line.iter() {
-            if node.is_goal() {
-                return node.distance;
-            }
-        }
-    }
-    0
 }
