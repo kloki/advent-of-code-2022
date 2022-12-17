@@ -1,8 +1,11 @@
+#[derive(Debug)]
 pub struct Packet {
     items: Vec<PacketItem>,
 }
 
+#[derive(Debug)]
 pub enum PacketItem {
+    Start,
     End,
     Value(usize),
     Done,
@@ -19,7 +22,7 @@ impl Packet {
                         items.push(PacketItem::Value(working.parse().unwrap()));
                         working = "".to_string();
                     };
-                    items.push(PacketItem::End)
+                    items.push(PacketItem::End);
                 }
                 ',' => {
                     if !working.is_empty() {
@@ -28,7 +31,7 @@ impl Packet {
                         working = "".to_string();
                     };
                 }
-                '[' => {}
+                '[' => items.push(PacketItem::Start),
                 l => working.push(l),
             }
         }
@@ -41,6 +44,10 @@ impl Packet {
     fn pop(&mut self) -> PacketItem {
         self.items.pop().unwrap()
     }
+    fn make_list(&mut self, packet: usize) {
+        self.items.push(PacketItem::End);
+        self.items.push(PacketItem::Value(packet));
+    }
 }
 
 pub fn compare_order(left: &str, right: &str) -> bool {
@@ -49,12 +56,14 @@ pub fn compare_order(left: &str, right: &str) -> bool {
 
     loop {
         match (left.pop(), right.pop()) {
-            (PacketItem::Value(l), PacketItem::Value(r)) if l < r => return true,
             (PacketItem::Value(l), PacketItem::Value(r)) if l > r => return false,
-            (PacketItem::End, PacketItem::Value(_)) => return true,
+            (PacketItem::Value(l), PacketItem::Value(r)) if l < r => return true,
             (PacketItem::Value(_), PacketItem::End) => return false,
-            (PacketItem::Done, _) => return true,
+            (PacketItem::End, PacketItem::Value(_)) => return true,
             (_, PacketItem::Done) => return false,
+            (PacketItem::Done, _) => return true,
+            (PacketItem::Start, PacketItem::Value(r)) => right.make_list(r),
+            (PacketItem::Value(l), PacketItem::Start) => left.make_list(l),
             _ => {}
         }
     }
@@ -95,7 +104,16 @@ mod tests {
     fn test_day13_1_8() {
         assert!(!compare_order(
             "[1,[2,[3,[4,[5,6,7]]]],8,9]",
-            "1,[2,[3,[4,[5,6,0]]]],8,9]"
+            "[1,[2,[3,[4,[5,6,0]]]],8,9]"
         ));
+    }
+    #[test]
+    fn test_day13_1_9() {
+        assert!(!compare_order("[5,3]", "[5,2]"));
+        assert!(!compare_order("[[5],3]", "[5,2]"));
+    }
+    #[test]
+    fn test_day13_1_10() {
+        assert!(!compare_order("5,[5,9]", "5,5,10"));
     }
 }
