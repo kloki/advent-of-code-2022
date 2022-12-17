@@ -1,5 +1,7 @@
+use packet::compare_order;
 use std::env;
 use std::fs;
+mod packet;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let fallback = "./input/input.txt".to_owned();
@@ -26,47 +28,36 @@ fn run(contents: String) -> usize {
     score
 }
 
-fn compare_order(left: &str, right: &str) -> bool {
-    true
-}
-
 #[cfg(test)]
 mod tests {
 
+    const TEST_INPUT: &str = "[1,1,3,1,1]
+[1,1,5,1,1]
+
+[[1],[2,3,4]]
+[[1],4]
+
+[9]
+[[8,7,6]]
+
+[[4,4],4,4]
+[[4,4],4,4,4]
+
+[7,7,7,7]
+[7,7,7]
+
+[]
+[3]
+
+[[[]]]
+[[]]
+
+[1,[2,[3,[4,[5,6,7]]]],8,9]
+[1,[2,[3,[4,[5,6,0]]]],8,9]";
+
     use super::*;
     #[test]
-    fn test_day13_1_1() {
-        assert!(compare_order("[1,1,3,1,1]", "[1,1,5,1,1]"));
-    }
-    #[test]
-    fn test_day13_1_2() {
-        assert!(compare_order("[[1],[2,3,4]]", "[[1],4]"));
-    }
-    #[test]
-    fn test_day13_1_3() {
-        assert!(!compare_order("[9]", "[[8,7,6]]"));
-    }
-    #[test]
-    fn test_day13_1_4() {
-        assert!(compare_order("[[4,4],4,4]", "[[4,4],4,4,4]"));
-    }
-    #[test]
-    fn test_day13_1_5() {
-        assert!(!compare_order("[7,7,7,7]", "[7,7,7]"));
-    }
-    #[test]
-    fn test_day13_1_6() {
-        assert!(compare_order("[]", "[3]"));
-    }
-    #[test]
-    fn test_day13_1_7() {
-        assert!(!compare_order("[[[]]]", "[[]]"));
-    }
-    #[test]
-    fn test_day13_1_8() {
-        assert!(!compare_order(
-            "[1,[2,[3,[4,[5,6,7]]]],8,9]",
-            "1,[2,[3,[4,[5,6,0]]]],8,9]"
-        ));
+    fn test_day13_1() {
+        assert_eq!(run(TEST_INPUT.to_string()), 13);
     }
 }
