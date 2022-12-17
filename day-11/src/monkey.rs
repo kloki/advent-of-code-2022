@@ -84,8 +84,8 @@ impl Monkey {
                 Value::Int(s) => s,
             };
             let mut new_item = match self.operation {
-                Operation::Add => (item + value),
-                Operation::Multiply => (item * value),
+                Operation::Add => item + value,
+                Operation::Multiply => item * value,
             };
 
             if self.modulo == 1 {
